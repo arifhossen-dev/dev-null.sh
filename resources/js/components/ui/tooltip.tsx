@@ -115,9 +115,10 @@ function TooltipTrigger({
           onPointerMove?.(event)
           // On a move with nothing pressed, not on entering: a trigger that scrolled or shifted under a still pointer
           // is entered by the press itself, and mounting it again during a press would drop it. A tap would land on a
-          // trigger mounted again under the finger, and touch shows no tooltip anyway.
+          // trigger mounted again under the finger, and touch shows no tooltip anyway. A click that landed before any
+          // move left its button focused, which the trigger mounted again takes back.
           if (event.pointerType !== "touch" && event.buttons === 0) {
-            arming.arm(false)
+            arming.arm(event.currentTarget.contains(document.activeElement))
           }
         }}
         onFocus={(event: React.FocusEvent<HTMLButtonElement>) => {
